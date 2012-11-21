@@ -36,7 +36,7 @@ if (curl_getinfo($ch, CURLINFO_HTTP_CODE) == 200) {
 		file_put_contents("lastcommit", current($data->commits)->sha);
 	}
 }
-unlink("patch.tmp");
+if (file_exists("patch.tmp")) { unlink("patch.tmp"); }
 curl_close($ch);
 
 ?>
