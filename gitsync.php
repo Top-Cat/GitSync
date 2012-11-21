@@ -30,6 +30,7 @@ if (curl_getinfo($ch, CURLINFO_HTTP_CODE) == 200) {
 		foreach ($data->files as $file) {
 			file_put_contents("patch", $file->patch);
 			exec("/usr/bin/patch '" . $file->filename . "' './patch'");
+			unlink($file->filename . ".orig");
 		}
 
 		file_put_contents("lastcommit", current($data->commits)->sha);
