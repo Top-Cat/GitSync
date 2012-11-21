@@ -28,14 +28,15 @@ if (curl_getinfo($ch, CURLINFO_HTTP_CODE) == 200) {
 
 	if (sizeOf($data->commits) > 0) {
 		foreach ($data->files as $file) {
-			file_put_contents("patch", $file->patch);
-			exec("/usr/bin/patch '" . $file->filename . "' './patch'");
-			unlink($file->filename . ".orig");
+			file_put_contents("patch.tmp", $file->patch);
+			exec("/usr/bin/patch '" . $file->filename . "' './patch.tmp'");
+			if (file_exists($file->filename . ".orig")) { unlink($file->filename . ".orig"); }
 		}
 
 		file_put_contents("lastcommit", current($data->commits)->sha);
 	}
 }
+unlink("patch.tmp");
 curl_close($ch);
 
 ?>
